@@ -3,22 +3,25 @@
 Next.js と NestJS の練習用アプリケーションを構築するためのモノレポです。
 
 現在の構成は `Yarn Workspaces + Turborepo + Next.js + NestJS` です。
+公開先は `apps/web = Vercel`、`apps/api = Railway` を前提に整備します。
 
 ## セットアップ
 
 1. Corepack を有効化します。
 2. Yarn を有効化します。
 3. 依存をインストールします。
-4. API 用の環境変数を用意します。
-5. Prisma の client 生成とローカル DB 初期化を行います。
+4. PostgreSQL を起動します。
+5. API / Web の環境変数を用意します。
+6. Prisma migration を適用します。
 
 ```bash
 corepack enable
 corepack prepare yarn@stable --activate
 yarn install
+docker compose up -d postgres
 cp apps/api/.env.example apps/api/.env
-yarn workspace @repo/api db:generate
-yarn workspace @repo/api db:init
+cp apps/web/.env.example apps/web/.env.local
+yarn workspace @repo/api db:migrate:dev
 ```
 
 動作確認済み環境:
@@ -46,11 +49,18 @@ API 用の主な環境変数:
 
 - `DATABASE_URL`
 - `JWT_SECRET`
+- `FRONTEND_ORIGIN`
+
+Web 用の主な環境変数:
+
+- `NEXT_PUBLIC_API_BASE_URL`
+- `API_BASE_URL`
 
 API ワークスペースの補助コマンド:
 
 - `yarn workspace @repo/api db:generate`
-- `yarn workspace @repo/api db:init`
+- `yarn workspace @repo/api db:migrate:dev`
+- `yarn workspace @repo/api db:migrate:deploy`
 
 ローカル起動後の確認ポイント:
 
@@ -60,6 +70,70 @@ API ワークスペースの補助コマンド:
   - NestJS 側の health response が JSON で返る
 - Next.js のトップページ上で `Connected` と表示される
   - Web から API の疎通が取れている状態
+
+## ローカル PostgreSQL
+
+DB はルートの `compose.yml` で起動します。
+
+```bash
+docker compose up -d postgres
+docker compose ps
+docker compose down
+```
+
+既定の接続先:
+
+- DB 名: `memo_app`
+- User: `postgres`
+- Password: `postgres`
+- Port: `5432`
+
+## デプロイ手順
+
+### 1. Railway に API を作成する
+
+1. GitHub リポジトリを Railway に接続する
+2. `apps/api` を Root Directory に設定する
+3. Railway PostgreSQL を追加し、その接続情報を `DATABASE_URL` に設定する
+4. API 環境変数を設定する
+
+API 環境変数:
+
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `FRONTEND_ORIGIN=https://memo.<your-domain>`
+
+推奨コマンド:
+
+- Build Command: `yarn workspace @repo/api build`
+- Start Command: `yarn workspace @repo/api start:railway`
+
+公開後の確認:
+
+- `https://memo-api.<your-domain>/health` が JSON を返す
+
+### 2. Vercel に Web を作成する
+
+1. 同じ GitHub リポジトリを Vercel に接続する
+2. `apps/web` を Root Directory に設定する
+3. Web 環境変数を設定する
+
+Web 環境変数:
+
+- `NEXT_PUBLIC_API_BASE_URL=https://memo-api.<your-domain>`
+- `API_BASE_URL=https://memo-api.<your-domain>`
+
+公開後の確認:
+
+- `https://memo.<your-domain>` のトップで `Connected` が表示される
+- 登録、ログイン、メモ CRUD が動く
+
+### 3. 独自ドメインを接続する
+
+- Vercel 側に `memo.<your-domain>` を設定する
+- Railway 側に `memo-api.<your-domain>` を設定する
+- DNS に CNAME または各サービスの案内するレコードを追加する
+- `FRONTEND_ORIGIN` と `NEXT_PUBLIC_API_BASE_URL` / `API_BASE_URL` を本番ドメインへ更新する
 
 ## ワークスペース
 

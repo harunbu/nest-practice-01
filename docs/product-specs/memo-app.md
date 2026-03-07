@@ -130,7 +130,7 @@ API の前提:
 ## 現在の技術選定
 
 - ORM は Prisma を採用する
-- 開発用 DB は SQLite を採用する
+- 開発/本番 DB は PostgreSQL を採用する
 - 認証は JWT Bearer Token を採用する
 - 認証 API は `register` と `login` を先に実装する
 - 最初の実装は API 側を優先し、Web 側は API 契約が固まってから接続する
