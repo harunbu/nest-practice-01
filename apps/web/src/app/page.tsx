@@ -1,10 +1,5 @@
+import type { HealthStatus } from "@repo/shared";
 import styles from "./page.module.css";
-
-type ApiHealth = {
-  service: string;
-  status: "ok";
-  timestamp: string;
-};
 
 const apiBaseUrl = process.env.API_BASE_URL ?? "http://127.0.0.1:3001";
 
@@ -21,7 +16,7 @@ async function getApiHealth() {
       };
     }
 
-    const health = (await response.json()) as ApiHealth;
+    const health = (await response.json()) as HealthStatus;
 
     return {
       ok: true as const,

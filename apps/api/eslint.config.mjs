@@ -29,6 +29,25 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '../web/**',
+                '../../web/**',
+                '../../../web/**',
+                '../../../../web/**',
+                'apps/web/**',
+                '@repo/web',
+              ],
+              message:
+                'Keep frontend code in apps/web. Move shared contracts to @repo/shared if both workspaces need them.',
+            },
+          ],
+        },
+      ],
       "prettier/prettier": ["error", { endOfLine: "auto" }],
     },
   },

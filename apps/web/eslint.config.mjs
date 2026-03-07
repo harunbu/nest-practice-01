@@ -13,6 +13,29 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "../api/**",
+                "../../api/**",
+                "../../../api/**",
+                "../../../../api/**",
+                "apps/api/**",
+                "@repo/api",
+              ],
+              message:
+                "Import shared contracts from @repo/shared or call the API over HTTP instead of importing apps/api directly.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

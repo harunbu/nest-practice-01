@@ -1,10 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
-export type HealthStatus = {
-  service: string;
-  status: 'ok';
-  timestamp: string;
-};
+import type { HealthStatus } from '@repo/shared';
 
 @Injectable()
 export class AppService {
