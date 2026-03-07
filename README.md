@@ -63,6 +63,15 @@ yarn test
 - `apps/web`: `3000`
 - `apps/api`: `3001`
 
+ローカル起動後の確認ポイントは以下です。
+
+- `http://localhost:3000`
+  - Next.js 側のトップページが表示される
+- `http://localhost:3001/health`
+  - NestJS 側の health response が JSON で返る
+- Next.js のトップページ上で `Connected` と表示される
+  - Web から API の疎通が取れている状態
+
 ## 各ワークスペース
 
 - `apps/web`
