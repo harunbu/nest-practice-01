@@ -1,0 +1,38 @@
+# dependencies
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+node_modules
+
+# build outputs
+.next
+.next/
+dist
+dist/
+coverage
+.turbo
+.turbo/
+*.tsbuildinfo
+
+# env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# logs
+yarn-debug.log*
+yarn-error.log*
+npm-debug.log*
+
+# system files
+.DS_Store
+.idea
+
+# app-local turbo logs
+apps/*/.turbo/

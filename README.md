@@ -1,81 +1,96 @@
 # nest-practice-01
 
-React.js と NestJS を使った練習用アプリケーションを構築するためのモノレポです。
+Next.js と NestJS の練習用アプリケーションを構築するためのモノレポです。
 
-現時点では初期ドキュメントのみを配置しています。構成は `Yarn Workspaces + Turborepo + Next.js + NestJS` を前提とします。
+現在の構成は `Yarn Workspaces + Turborepo + Next.js + NestJS` です。
 
-## 目的
-
-- React.js でフロントエンドを構築する
-- NestJS で API サーバーを構築する
-- モノレポ構成でフロントエンドとバックエンドを一元管理する
-- 開発、ビルド、テストの流れを統一する
-
-## 想定構成
-
-以下は初期構成の叩き台です。
+## 構成
 
 ```text
 .
 ├── apps/
-│   ├── web/        # Next.js アプリ
-│   └── api/        # NestJS アプリ
+│   ├── api/          # NestJS API
+│   └── web/          # Next.js frontend
 ├── packages/
-│   ├── shared/     # 共通型、定数、ユーティリティ
-│   └── ui/         # 共通 UI が必要になった場合に利用
+│   ├── shared/       # 共通型、定数、ユーティリティ用
+│   └── ui/           # 共通 UI 用
+├── AGENTS.md
+├── README.md
 ├── package.json
 ├── turbo.json
-├── yarn.lock
-├── README.md
-└── AGENTS.md
+└── yarn.lock
 ```
 
 ## 技術スタック
 
-- Frontend: Next.js
-- Backend: NestJS
-- Package manager: Yarn
-- Monorepo tool: Turborepo
-- Workspace management: Yarn Workspaces
-- Linter / Formatter: 未確定
-- Test runner: 未確定
+- Frontend: Next.js 16
+- Backend: NestJS 11
+- Package manager: Yarn 4
+- Monorepo: Yarn Workspaces
+- Task runner: Turborepo
+- Language: TypeScript
 
-## セットアップ手順
+## 動作確認済み環境
 
-実装前のため、以下は初期構築の想定手順です。
+- Node.js `v22.18.0`
+- Yarn `4.13.0`
 
-1. このリポジトリを clone します。
-2. Node.js の推奨バージョンを揃えます。
-3. Yarn を有効化します。
-4. ルートに `package.json` と `turbo.json` を作成し、workspaces を定義します。
-5. `apps/web` に Next.js アプリを作成します。
-6. `apps/api` に NestJS アプリを作成します。
-7. 必要に応じて `packages/` 配下へ共通コードを切り出します。
+## セットアップ
 
-## 開発方針
+1. Corepack を有効化します。
+2. Yarn を有効化します。
+3. 依存をインストールします。
+
+```bash
+corepack enable
+corepack prepare yarn@stable --activate
+yarn install
+```
+
+## 開発コマンド
+
+ルートで実行します。
+
+```bash
+yarn dev
+yarn build
+yarn lint
+yarn test
+```
+
+各アプリの既定ポートは以下です。
+
+- `apps/web`: `3000`
+- `apps/api`: `3001`
+
+## 各ワークスペース
+
+- `apps/web`
+  - Next.js App Router 構成
+- `apps/api`
+  - NestJS の初期アプリ構成
+- `packages/shared`
+  - 共通ロジックの受け皿
+- `packages/ui`
+  - 共通 UI の受け皿
+
+## 運用方針
 
 - フロントエンドとバックエンドは同一リポジトリで管理する
-- 共通で使う型やユーティリティは `packages/` に集約する
-- ビルド、Lint、テストの実行は Turborepo 経由で統一する
-- ドキュメントと実装の差分が出たら README / AGENTS.md を先に更新する
-
-## 予定しているアプリ
-
-- `apps/web`: Next.js を使ったフロントエンド
-- `apps/api`: NestJS を使った API サーバー
+- 共通型やユーティリティは `packages/shared` に集約する
+- UI を共有する場合は `packages/ui` に切り出す
+- build / lint / test / dev は可能な限りルートから Turborepo 経由で実行する
+- 構成変更時は README と AGENTS.md を更新する
 
 ## 今後決めること
 
-- DB を使うか、使うなら何を選ぶか
-- テスト戦略をどうするか
-- CI を導入するか
-- `packages/ui` を用意するか
-- API クライアントや共通型の管理方法をどうするか
+- DB を利用するか
+- 認証方式をどうするか
+- API クライアントと共通型の管理方法
+- テスト戦略の詳細
+- CI / CD の導入
+- デプロイ先の構成
 
 ## ドキュメント
 
 - 開発ルール: [AGENTS.md](./AGENTS.md)
-
-## ステータス
-
-初期化前の叩き台です。次のステップは、Yarn Workspaces と Turborepo の初期設定、および `apps/web` と `apps/api` の作成です。
