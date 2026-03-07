@@ -25,6 +25,10 @@ coverage
 .env.test.local
 .env.production.local
 
+# local databases
+*.db
+*.db-journal
+
 # logs
 yarn-debug.log*
 yarn-error.log*

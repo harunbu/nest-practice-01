@@ -123,7 +123,14 @@ API の前提:
 
 ## 未確定事項
 
-- ORM は Prisma と TypeORM のどちらを採用するか
 - 認証トークンの保存場所を Cookie にするか、別方式にするか
 - Markdown の表示ライブラリを何にするか
 - タグ入力 UI を自由入力にするか、候補選択にするか
+
+## 現在の技術選定
+
+- ORM は Prisma を採用する
+- 開発用 DB は SQLite を採用する
+- 認証は JWT Bearer Token を採用する
+- 認証 API は `register` と `login` を先に実装する
+- 最初の実装は API 側を優先し、Web 側は API 契約が固まってから接続する
