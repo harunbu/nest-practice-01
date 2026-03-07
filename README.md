@@ -71,4 +71,5 @@ yarn test
 - 開発ガイド: [AGENTS.md](./AGENTS.md)
 - アーキテクチャ方針: [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
 - 現行のプロダクト前提: [docs/product-specs/monorepo-baseline.md](./docs/product-specs/monorepo-baseline.md)
+- メモアプリ要件: [docs/product-specs/memo-app.md](./docs/product-specs/memo-app.md)
 - 実行計画の運用: [docs/exec-plans/README.md](./docs/exec-plans/README.md)
