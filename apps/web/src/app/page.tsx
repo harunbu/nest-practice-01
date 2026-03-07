@@ -1,7 +1,11 @@
 import type { HealthStatus } from "@repo/shared";
+import { MemoClient } from "./memo-client";
 import styles from "./page.module.css";
 
-const apiBaseUrl = process.env.API_BASE_URL ?? "http://127.0.0.1:3001";
+const apiBaseUrl =
+  process.env.API_BASE_URL ??
+  process.env.NEXT_PUBLIC_API_BASE_URL ??
+  "http://127.0.0.1:3001";
 
 async function getApiHealth() {
   try {
@@ -37,12 +41,12 @@ export default async function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <section className={styles.hero}>
-          <p className={styles.eyebrow}>Monorepo Practice</p>
-          <h1>Next.js と NestJS を一緒に動かす最小構成</h1>
+          <p className={styles.eyebrow}>Memo App</p>
+          <h1>Next.js と NestJS で動く認証付きメモアプリ</h1>
           <p className={styles.description}>
             フロントエンドは <code>apps/web</code>、バックエンドは{" "}
-            <code>apps/api</code> です。下のステータスが緑なら、Next.js
-            から NestJS への疎通が確認できています。
+            <code>apps/api</code> です。下のステータスが緑なら、認証 API と
+            メモ API を使う準備ができています。
           </p>
         </section>
 
@@ -50,7 +54,7 @@ export default async function Home() {
           <div className={styles.statusHeader}>
             <div>
               <p className={styles.cardLabel}>API Status</p>
-              <h2>NestJS Health Check</h2>
+              <h2>Backend Health Check</h2>
             </div>
             <span
               className={api.ok ? styles.statusOk : styles.statusError}
@@ -84,25 +88,7 @@ export default async function Home() {
           )}
         </section>
 
-        <section className={styles.steps}>
-          <div className={styles.step}>
-            <span>1</span>
-            <p>
-              <code>yarn dev</code> で Next.js と NestJS を同時起動する
-            </p>
-          </div>
-          <div className={styles.step}>
-            <span>2</span>
-            <p>
-              Web は <code>localhost:3000</code>、API は{" "}
-              <code>localhost:3001</code>
-            </p>
-          </div>
-          <div className={styles.step}>
-            <span>3</span>
-            <p>次は共通型、DB、認証、API 呼び出し層を足していく</p>
-          </div>
-        </section>
+        <MemoClient apiReachable={api.ok} />
       </main>
     </div>
   );

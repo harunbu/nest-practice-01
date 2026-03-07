@@ -3,15 +3,21 @@ import Database from 'better-sqlite3';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
+function getWorkspaceDir() {
+  return process.cwd().endsWith('/apps/api')
+    ? process.cwd()
+    : resolve(process.cwd(), 'apps/api');
+}
+
 function resolveDatabasePath(databaseUrl) {
   if (!databaseUrl.startsWith('file:')) {
     throw new Error('Only file: DATABASE_URL values are supported.');
   }
 
   const relativePath = databaseUrl.slice('file:'.length);
-  const prismaDir = resolve(import.meta.dirname, '../prisma');
+  const workspaceDir = getWorkspaceDir();
 
-  return resolve(prismaDir, relativePath);
+  return resolve(workspaceDir, relativePath);
 }
 
 const databaseUrl = process.env.DATABASE_URL ?? 'file:./dev.db';
