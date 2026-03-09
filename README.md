@@ -93,7 +93,7 @@ docker compose down
 ### 1. Railway に API を作成する
 
 1. GitHub リポジトリを Railway に接続する
-2. `apps/api` を Root Directory に設定する
+2. Root Directory はリポジトリのルートのまま運用する
 3. Railway PostgreSQL を追加し、その接続情報を `DATABASE_URL` に設定する
 4. API 環境変数を設定する
 
@@ -107,6 +107,7 @@ API 環境変数:
 
 - Build Command: `yarn workspace @repo/api build`
 - Start Command: `yarn workspace @repo/api start:railway`
+- Watch Paths: `/apps/api/**`, `/packages/**`
 
 公開後の確認:
 
@@ -123,10 +124,65 @@ Web 環境変数:
 - `NEXT_PUBLIC_API_BASE_URL=https://memo-api.<your-domain>`
 - `API_BASE_URL=https://memo-api.<your-domain>`
 
+補足:
+
+- Vercel は monorepo の `yarn install` 中に `apps/api` を読むことがある
+- `apps/api/prisma.config.ts` は `DATABASE_URL` が未設定でも install で即死しないようにしている
+- `API_BASE_URL` と `NEXT_PUBLIC_API_BASE_URL` は `turbo.json` の build 入力に追加済み
+
 公開後の確認:
 
 - `https://memo.<your-domain>` のトップで `Connected` が表示される
 - 登録、ログイン、メモ CRUD が動く
+
+## デプロイ確認
+
+Vercel と Railway は公式 CLI で確認できます。CLI はグローバルインストール前提でも構いません。
+
+```bash
+# Vercel
+cd apps/web
+vercel whoami
+vercel list nest-practice-01-web
+vercel inspect <deployment-url> --wait
+vercel inspect <deployment-url> --logs
+
+# Railway
+cd apps/api
+railway whoami
+railway service status --service nest-practice-01
+railway logs --service nest-practice-01
+```
+
+本番の疎通確認:
+
+```bash
+curl -sS https://nest-practice-01-production.up.railway.app/health
+curl -sS https://nest-practice-01-web.vercel.app
+```
+
+## トラブルシュート
+
+### Vercel の install 中に Prisma で落ちる
+
+過去に、Vercel の `yarn install` 中に `apps/api/prisma.config.ts` が評価され、`DATABASE_URL` 未設定で `PrismaConfigEnvError` になったことがある。
+
+対策:
+
+- `apps/api/prisma.config.ts` では `DATABASE_URL` 未設定時にフォールバック値を使う
+- API の実運用では必ず Railway 側で `DATABASE_URL` を設定する
+- Web 側の API URL は `API_BASE_URL` と `NEXT_PUBLIC_API_BASE_URL` を両方設定する
+
+### Railway の DB を GUI クライアントで見たい
+
+Railway の外部接続情報は `Postgres` サービスの変数から確認する。
+
+```bash
+cd apps/api
+railway variables --service Postgres --environment production
+```
+
+PHPStorm などの GUI クライアントには、内部向けの `DATABASE_URL` ではなく外部接続用の `DATABASE_PUBLIC_URL` 相当の Host / Port を使う。
 
 ### 3. 独自ドメインを接続する
 
