@@ -78,6 +78,9 @@ Completed
   - `https://nest-practice-01-web.vercel.app` で `Connected` 表示を確認
   - `https://nest-practice-01-production.up.railway.app/health` が正常応答
   - 登録したデータを Railway Postgres に保存できていることを GUI クライアントでも確認
+  - `git push` 直後は Vercel / Railway の完了タイミングがずれ、数分は旧デプロイが見えることがある
+  - 実際に、Vercel の新しい Production デプロイが `Building` の間は `/auth` と `/notes` が旧デプロイ側で 404 だった
+  - 新デプロイが `Ready` になった後は `/auth` が `200`、未ログインの `/notes` が `307 -> /auth` になり、反映完了を確認できた
 
 ## Environment Variables
 

@@ -164,11 +164,21 @@ railway service status --service nest-practice-01
 railway logs --service nest-practice-01
 ```
 
+反映待ちの注意:
+
+- `git push` 直後は、Vercel と Railway が同時にデプロイを開始しても反映完了の時刻は揃わない
+- 数十秒から数分、古いデプロイが本番エイリアスを向いたままになることがある
+- 先に `vercel list ...` と `railway service status ...` で `Ready` / `SUCCESS` を確認してから本番 URL を見る
+- 保護ルートは未ログイン時に `/auth` へリダイレクトされるため、`/notes` の `307 -> /auth` は正常挙動
+- `/auth` や `/notes` が一時的に 404 の場合、旧デプロイがまだ切り替わっていない可能性がある
+
 本番の疎通確認:
 
 ```bash
 curl -sS https://nest-practice-01-production.up.railway.app/health
 curl -sS https://nest-practice-01-web.vercel.app
+curl -I -sS https://nest-practice-01-web.vercel.app/auth
+curl -I -sS https://nest-practice-01-web.vercel.app/notes
 ```
 
 ## トラブルシュート
