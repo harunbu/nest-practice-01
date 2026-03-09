@@ -2,7 +2,7 @@
 
 ## Status
 
-In Progress
+Completed
 
 ## Goal
 
@@ -101,8 +101,8 @@ In Progress
 
 ## Notes For Next Session
 
-- まずは公開作業に入る前に、ローカル DB を PostgreSQL に切り替える
+- この計画の対象だった PostgreSQL 移行、Vercel/Railway 公開、基本疎通確認は完了した
 - `Next.js` と `NestJS` を Docker に入れる必要は今のところない
-- 本番公開前に `localStorage` ベース認証を Cookie 化するかは別途判断する
-- デプロイ状態確認用の `package.json` scripts を追加するか検討する
+- 次の改善候補は `localStorage` ベース認証の Cookie 化
+- デプロイ状態確認用の `package.json` scripts を追加する余地がある
 - 本番動作確認のチェックリストを docs に切り出すと再確認しやすい
