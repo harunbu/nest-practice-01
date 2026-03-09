@@ -66,10 +66,20 @@ API ワークスペースの補助コマンド:
 
 - `http://localhost:3000`
   - Next.js 側のトップページが表示される
+- `http://localhost:3000/auth`
+  - 登録とログインを専用画面で試せる
+- `http://localhost:3000/notes`
+  - 認証後にメモ一覧とタグ検索を試せる
 - `http://localhost:3001/health`
   - NestJS 側の health response が JSON で返る
 - Next.js のトップページ上で `Connected` と表示される
   - Web から API の疎通が取れている状態
+
+Web 側の認証運用:
+
+- ログイン後のセッションは `httpOnly` Cookie で保持する
+- Web は `apps/web/src/app/api/*` の Route Handler 経由で API を呼び出す
+- メモ画面は `/notes`, `/notes/new`, `/notes/:id`, `/notes/:id/edit` に分割している
 
 ## ローカル PostgreSQL
 
