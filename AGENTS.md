@@ -26,7 +26,7 @@
 - Git のコミットメッセージは日本語で書く
 - Git 操作は逐次実行する。`git add` / `git commit` / `git push` を並列実行しない
 - `.git/index.lock` エラーを避けるため、コミット前後に別の Git プロセスや IDE の自動 Git 操作が競合していないことを確認する
-- `apps/api` では `postinstall` で Prisma を生成しない。`schema.prisma` を変更したら明示的に `yarn workspace @repo/api db:generate` を実行する
+- `apps/api` では `postinstall` で Prisma を生成しない。`build` 実行時は `prebuild` で Prisma Client を自動生成するが、`schema.prisma` を変更して `dev` で確認する場合は明示的に `yarn workspace @repo/api db:generate` を実行する
 
 ## ドキュメントの置き場所
 
