@@ -56,6 +56,7 @@ In Progress
 - 画面は `/auth`, `/notes`, `/notes/new`, `/notes/[id]`, `/notes/[id]/edit` へ分割した
 - API 側は AuthController / NotesController の統合テストを追加し、認証・CRUD・タグ検索・所有者チェックを確認できるようにした
 - Web 側は Vitest + Testing Library を追加し、認証送信、メモ作成/更新、削除導線の UI テストを追加した
+- メモ詳細画面は Markdown をレンダリングして表示できるようにした
 - `yarn lint`, `yarn test`, `yarn build` は通過済み
 
 ## Done When

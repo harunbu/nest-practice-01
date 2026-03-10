@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import styles from "../../page.module.css";
 import { DeleteNoteButton } from "../../components/delete-note-button";
+import { MarkdownRenderer } from "../../components/markdown-renderer";
 import { NotesShell } from "../../components/notes-shell";
 import { getNote, getNotes } from "@/lib/server-api";
 import { readAccessToken, readSessionUser } from "@/lib/session-cookie";
@@ -64,7 +65,9 @@ export default async function NoteDetailPage({ params }: NoteDetailPageProps) {
             <span>作成 {new Date(note.createdAt).toLocaleString("ja-JP")}</span>
             <span>更新 {new Date(note.updatedAt).toLocaleString("ja-JP")}</span>
           </div>
-          <article className={styles.noteContent}>{note.content}</article>
+          <article className={styles.noteContent}>
+            <MarkdownRenderer content={note.content} />
+          </article>
         </div>
       </section>
     </NotesShell>
